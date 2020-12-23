@@ -1,23 +1,15 @@
 import React, { Component } from "react";
 import "./workspace.css";
 import Node from "../Node/Node.jsx";
-import { render } from "@testing-library/react";
 
 class Workspace extends Component {
   state = {
     nodes: [],
+    start: [-1, -1],
+    end: [-1, -1],
   };
 
   nodeClicked = (e, row, col) => {
-    /*console.log(
-      "Clicked: (" +
-        row +
-        "," +
-        col +
-        ") >> " +
-        this.state.nodes[row][col].color
-    );
-    */
     let newNodes = this.state.nodes;
     newNodes[row][col].color = "#00ff00";
 
@@ -73,24 +65,4 @@ class Workspace extends Component {
   }
 }
 
-//<div className="wrk-grid">{this.state.nodes}</div>
 export default Workspace;
-
-/*
-return (
-  <Node
-    key={row + "-" + col}
-    row={row}
-    col={col}
-    color={color}
-    nodeClicked={this.nodeClicked}
-  />
-);
-
-console.log("Inner Row: " + rowIndex);
-              console.log("Inner Col: " + col);
-              console.log(
-                "Inner Color: " + this.state.nodes[rowIndex][col].color
-              );
-              
-*/

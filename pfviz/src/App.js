@@ -1,12 +1,10 @@
 import "./App.css";
-import Workspace from "./components/Workspace/Workspace.jsx";
-import Header from "./components/Header/Header.jsx";
+import Pathfinder from "./components/Pathfinder/Pathfinder.jsx";
 
 function App() {
   return (
     <div>
-      <Header />
-      <Workspace />
+      <Pathfinder />
     </div>
   );
 }
