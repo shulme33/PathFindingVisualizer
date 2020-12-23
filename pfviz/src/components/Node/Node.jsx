@@ -9,13 +9,29 @@ class Node extends Component {
   state = { color: this.props.color };
 
   componentDidMount() {
-    if (this.props.color != "#ffffff") {
-      console.log(this.props.color);
+    if (this.props.color !== "#ffffff") {
+      //console.log(this.props.color);
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.color !== prevProps.color) {
+      //console.log("New color: " + prevProps.color + " >> " + this.props.color);
+      this.setState({ color: this.props.color });
+    }
+  }
+
+  /*
+    Node components arent updating when Workspace gets updated after the click
+  */
+
   addFiller() {
-    let filler = <div className="node-filler"></div>;
+    let filler = (
+      <div
+        className="node-filler"
+        style={{ backgroundColor: this.props.color }}
+      ></div>
+    );
     return filler;
   }
 

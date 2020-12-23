@@ -9,7 +9,19 @@ class Workspace extends Component {
   };
 
   nodeClicked = (e, row, col) => {
-    console.log("Clicked: (" + row + "," + col + ")");
+    /*console.log(
+      "Clicked: (" +
+        row +
+        "," +
+        col +
+        ") >> " +
+        this.state.nodes[row][col].color
+    );
+    */
+    let newNodes = this.state.nodes;
+    newNodes[row][col].color = "#00ff00";
+
+    this.setState({ nodes: newNodes });
   };
 
   componentDidMount() {
@@ -24,6 +36,7 @@ class Workspace extends Component {
       let newLine = [];
       for (var j = 0; j < totalWide; j++) {
         newLine.push({
+          key: i + "-" + j,
           row: i,
           col: j,
           color: "#ffffff",
@@ -45,7 +58,7 @@ class Workspace extends Component {
             return row.map((row, col) => {
               return (
                 <Node
-                  key={rowIndex + "-" + col}
+                  key={this.state.nodes[rowIndex][col].key}
                   row={rowIndex}
                   col={col}
                   color={this.state.nodes[rowIndex][col].color}
