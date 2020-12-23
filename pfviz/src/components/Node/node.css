@@ -1,0 +1,16 @@
+.node {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  border: 1px solid #bfbfbf;
+  background-color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-filler {
+  background-color: green;
+  width: 15px;
+  height: 15px;
+}

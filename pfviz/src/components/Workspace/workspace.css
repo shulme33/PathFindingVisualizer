@@ -1,0 +1,14 @@
+.wrk {
+  width: 100vw;
+  height: calc(100vh - 200px);
+  background-color: #d7d7d7;
+}
+
+.wrk-grid {
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
