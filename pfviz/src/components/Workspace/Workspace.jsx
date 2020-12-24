@@ -5,8 +5,14 @@ import Node from "../Node/Node.jsx";
 class Workspace extends Component {
   state = {
     nodes: [],
-    start: [-1, -1],
-    end: [-1, -1],
+    start: {
+      row: -1,
+      col: -1,
+    },
+    end: {
+      row: -1,
+      col: -1,
+    },
   };
 
   nodeClicked = (e, row, col) => {
@@ -14,14 +20,27 @@ class Workspace extends Component {
     newNodes[row][col].status = this.props.mode; //HERE
     console.log("Mode: " + this.props.mode);
 
-    this.setState({ nodes: newNodes });
-  };
-
-  /*componentDidUpdate(prevProps){
-    if(this.props.mode !== prevProps.mode){
-      this.setState({mode: })
+    var newStart = this.state.start;
+    var newEnd = this.state.end;
+    switch (this.props.mode) {
+      case "start":
+        if (this.state.start.row !== -1) {
+          newNodes[this.state.start.row][this.state.start.col].status = "";
+        }
+        newStart = { row: row, col: col };
+        break;
+      case "end":
+        if (this.state.end.row !== -1) {
+          newNodes[this.state.end.row][this.state.end.col].status = "";
+        }
+        newEnd = { row: row, col: col };
+        break;
+      default:
+        break;
     }
-  }*/
+
+    this.setState({ nodes: newNodes, start: newStart, end: newEnd });
+  };
 
   componentDidMount() {
     const mainHeight = document.getElementById("main-wrk").clientHeight;
