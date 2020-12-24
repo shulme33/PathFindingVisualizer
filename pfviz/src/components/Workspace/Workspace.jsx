@@ -11,10 +11,17 @@ class Workspace extends Component {
 
   nodeClicked = (e, row, col) => {
     let newNodes = this.state.nodes;
-    newNodes[row][col].color = "#00ff00";
+    newNodes[row][col].status = this.props.mode; //HERE
+    console.log("Mode: " + this.props.mode);
 
     this.setState({ nodes: newNodes });
   };
+
+  /*componentDidUpdate(prevProps){
+    if(this.props.mode !== prevProps.mode){
+      this.setState({mode: })
+    }
+  }*/
 
   componentDidMount() {
     const mainHeight = document.getElementById("main-wrk").clientHeight;
@@ -31,7 +38,7 @@ class Workspace extends Component {
           key: i + "-" + j,
           row: i,
           col: j,
-          color: "#ffffff",
+          status: "",
         });
       }
       newNodes.push(newLine);
@@ -53,8 +60,9 @@ class Workspace extends Component {
                   key={this.state.nodes[rowIndex][col].key}
                   row={rowIndex}
                   col={col}
-                  color={this.state.nodes[rowIndex][col].color}
+                  status={this.state.nodes[rowIndex][col].status}
                   nodeClicked={this.nodeClicked}
+                  mode={this.props.mode}
                 />
               );
             });

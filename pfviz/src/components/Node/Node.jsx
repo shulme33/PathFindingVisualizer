@@ -6,31 +6,26 @@ class Node extends Component {
   //row
   //column
   //color
-  state = { color: this.props.color };
-
-  componentDidMount() {
-    if (this.props.color !== "#ffffff") {
-      //console.log(this.props.color);
-    }
-  }
+  //mode
+  state = { status: this.props.status };
 
   componentDidUpdate(prevProps) {
-    if (this.props.color !== prevProps.color) {
-      //console.log("New color: " + prevProps.color + " >> " + this.props.color);
-      this.setState({ color: this.props.color });
+    if (this.props.status !== prevProps.status) {
+      this.setState({ color: this.props.statusr });
     }
   }
 
-  /*
-    Node components arent updating when Workspace gets updated after the click
-  */
-
   addFiller() {
+    let fillColor = "#ffffff";
+
+    if (this.props.status === "end") {
+      fillColor = "#ff0000";
+    } else if (this.props.status === "start") {
+      fillColor = "#00ff00";
+    }
+
     let filler = (
-      <div
-        className="node-filler"
-        style={{ backgroundColor: this.props.color }}
-      ></div>
+      <div className="node-filler" style={{ backgroundColor: fillColor }}></div>
     );
     return filler;
   }

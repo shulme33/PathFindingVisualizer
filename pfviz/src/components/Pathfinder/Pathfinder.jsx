@@ -27,10 +27,7 @@ class Pathfinder extends Component {
           updateAlgorithm={this.updateAlgorithm}
           updateMode={this.updateMode}
         />
-        <Workspace
-          mode={this.state.algorithm}
-          algorithm={this.state.algorithm}
-        />
+        <Workspace mode={this.state.mode} algorithm={this.state.algorithm} />
       </div>
     );
   }
