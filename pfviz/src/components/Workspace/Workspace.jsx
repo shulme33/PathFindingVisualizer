@@ -15,32 +15,10 @@ class Workspace extends Component {
     },
   };
 
-  nodeClicked = (e, row, col) => {
-    let newNodes = this.state.nodes;
-    newNodes[row][col].status = this.props.mode; //HERE
-    console.log("Mode: " + this.props.mode);
-
-    var newStart = this.state.start;
-    var newEnd = this.state.end;
-    switch (this.props.mode) {
-      case "start":
-        if (this.state.start.row !== -1) {
-          newNodes[this.state.start.row][this.state.start.col].status = "";
-        }
-        newStart = { row: row, col: col };
-        break;
-      case "end":
-        if (this.state.end.row !== -1) {
-          newNodes[this.state.end.row][this.state.end.col].status = "";
-        }
-        newEnd = { row: row, col: col };
-        break;
-      default:
-        break;
-    }
-
-    this.setState({ nodes: newNodes, start: newStart, end: newEnd });
-  };
+  constructor() {
+    super();
+    this.breadthFirstSearch = this.breadthFirstSearch.bind(this);
+  }
 
   componentDidMount() {
     const mainHeight = document.getElementById("main-wrk").clientHeight;
@@ -68,6 +46,33 @@ class Workspace extends Component {
     });
   }
 
+  nodeClicked = (e, row, col) => {
+    let newNodes = this.state.nodes;
+    newNodes[row][col].status = this.props.mode; //HERE
+    console.log("Mode: " + this.props.mode);
+
+    var newStart = this.state.start;
+    var newEnd = this.state.end;
+    switch (this.props.mode) {
+      case "start":
+        if (this.state.start.row !== -1) {
+          newNodes[this.state.start.row][this.state.start.col].status = "";
+        }
+        newStart = { row: row, col: col };
+        break;
+      case "end":
+        if (this.state.end.row !== -1) {
+          newNodes[this.state.end.row][this.state.end.col].status = "";
+        }
+        newEnd = { row: row, col: col };
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ nodes: newNodes, start: newStart, end: newEnd });
+  };
+
   render() {
     return (
       <div className="wrk" id="main-wrk">
@@ -89,6 +94,55 @@ class Workspace extends Component {
         </div>
       </div>
     );
+  }
+
+  startAlgorithm() {
+    switch (this.props.algorithm) {
+      case "breadth-first":
+        console.log("Breadth First Search >> " + this.state.start.col);
+        this.breadthFirstSearch(this.state.start.row, this.state.start.col);
+        break;
+      default:
+        console.log("Algorithm not setup");
+        break;
+    }
+  }
+
+  isOnGrid(row, col) {
+    if (row < 0 || col < 0) return false;
+    if (row >= this.state.nodes.length || col >= this.state.nodes[0].length) {
+      return false;
+    }
+    return true;
+  }
+
+  breadthFirstSearch(row, col, checked = {}) {
+    if (row === this.state.end.row && col === this.state.end.col) {
+      return true;
+    }
+    if ([row, col] in checked) {
+      return false;
+    }
+    var dir = [
+      [1, 1],
+      [-1, 1],
+      [-1, -1],
+      [1, -1],
+    ];
+
+    console.log("Checking: (" + row + ", " + col + ")");
+
+    for (var i = 0; i < dir.length; i++) {
+      var newRow = row + dir[i][0];
+      var newCol = col + dir[i][1];
+      if (this.isOnGrid(newRow, newCol)) {
+        //Spot is on grid and has not been visited
+        checked[[newRow, newCol]] = true;
+        if (this.breadthFirstSearch(newRow, newCol)) {
+          return true;
+        }
+      }
+    }
   }
 }
 
