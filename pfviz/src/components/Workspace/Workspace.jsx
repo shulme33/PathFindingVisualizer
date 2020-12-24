@@ -13,11 +13,13 @@ class Workspace extends Component {
       row: -1,
       col: -1,
     },
+    endFound: false,
   };
 
   constructor() {
     super();
     this.breadthFirstSearch = this.breadthFirstSearch.bind(this);
+    this.dijkstras_algorithm = this.dijkstras_algorithm.bind(this);
   }
 
   componentDidMount() {
@@ -98,9 +100,15 @@ class Workspace extends Component {
 
   startAlgorithm() {
     switch (this.props.algorithm) {
+      case "dijkstra":
+        this.dijkstras_algorithm();
+        break;
       case "breadth-first":
         console.log("Breadth First Search >> " + this.state.start.col);
-        this.breadthFirstSearch(this.state.start.row, this.state.start.col);
+        console.log(
+          "----------BFS: " +
+            this.breadthFirstSearch(this.state.start.row, this.state.start.col)
+        );
         break;
       default:
         console.log("Algorithm not setup");
@@ -116,34 +124,65 @@ class Workspace extends Component {
     return true;
   }
 
-  breadthFirstSearch(row, col, checked = {}) {
+  dijkstras_algorithm() {}
+
+  breadthFirstSearch(row, col, cost = 0, checked = {}) {
+    //console.log("Checking: (" + row + ", " + col + ")");
     if (row === this.state.end.row && col === this.state.end.col) {
-      return true;
+      return cost;
     }
-    if ([row, col] in checked) {
-      return false;
-    }
-    var dir = [
-      [1, 1],
-      [-1, 1],
-      [-1, -1],
-      [1, -1],
+
+    let dir = [
+      [1, 0],
+      [0, 1],
+      [-1, 0],
+      [0, -1],
     ];
 
-    console.log("Checking: (" + row + ", " + col + ")");
+    let smallestCost = Infinity;
+    for (let i = 0; i < dir.length; i++) {
+      let newRow = row + dir[i][0];
+      let newCol = col + dir[i][1];
+      let key = newRow + "-" + newCol;
 
-    for (var i = 0; i < dir.length; i++) {
-      var newRow = row + dir[i][0];
-      var newCol = col + dir[i][1];
-      if (this.isOnGrid(newRow, newCol)) {
-        //Spot is on grid and has not been visited
-        checked[[newRow, newCol]] = true;
-        if (this.breadthFirstSearch(newRow, newCol)) {
-          return true;
-        }
+      if (
+        this.isOnGrid(newRow, newCol) &&
+        (!(key in checked) || checked[key] > cost + 1)
+      ) {
+        /*console.log(
+          "New: (" +
+            newRow +
+            ", " +
+            newCol +
+            ") >> " +
+            checked[key] +
+            " <<>> " +
+            (cost + 1)
+        );*/
+        checked[key] = cost + 1;
+        let curSmallest = this.breadthFirstSearch(
+          newRow,
+          newCol,
+          cost + 1,
+          checked
+        );
+        if (curSmallest < smallestCost) smallestCost = curSmallest;
       }
     }
+    return smallestCost;
   }
 }
+/*
+bfs(){
+  if at the end, return cost
+
+  for each direction
+    getDistance()
+
+  return shortest of all distances
+}
+
+
+*/
 
 export default Workspace;
