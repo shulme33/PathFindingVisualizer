@@ -22,6 +22,8 @@ class Node extends Component {
       fillColor = "#ff0000";
     } else if (this.props.status === "start") {
       fillColor = "#00ff00";
+    } else if (this.props.status === "visited") {
+      fillColor = "#000000";
     }
 
     let filler = (

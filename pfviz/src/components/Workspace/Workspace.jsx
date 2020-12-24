@@ -13,7 +13,6 @@ class Workspace extends Component {
       row: -1,
       col: -1,
     },
-    endFound: false,
   };
 
   constructor() {
@@ -99,12 +98,20 @@ class Workspace extends Component {
   }
 
   startAlgorithm() {
+    let newNodes = [...this.state.nodes];
+    let changeNode = {
+      ...newNodes[this.state.start.row + 1][this.state.start.col + 1],
+    };
+    changeNode.status = "visited";
+    newNodes[this.state.start.row + 1][this.state.start.col + 1] = changeNode;
+    this.setState({ nodes: newNodes });
+
     switch (this.props.algorithm) {
       case "dijkstra":
         this.dijkstras_algorithm();
         break;
       case "breadth-first":
-        console.log("Breadth First Search >> " + this.state.start.col);
+        //console.log("Breadth First Search >> " + this.state.start.col);
         console.log(
           "----------BFS: " +
             this.breadthFirstSearch(this.state.start.row, this.state.start.col)
@@ -128,6 +135,7 @@ class Workspace extends Component {
 
   breadthFirstSearch(row, col, cost = 0, checked = {}) {
     //console.log("Checking: (" + row + ", " + col + ")");
+
     if (row === this.state.end.row && col === this.state.end.col) {
       return cost;
     }
