@@ -1,6 +1,7 @@
 .hdr {
   width: 100vw;
   height: 200px;
+  padding: 10px;
   background-color: #1f1f1f;
 }
 
@@ -13,5 +14,6 @@
 
 .hdr-button {
   vertical-align: top;
-  margin-top: 15px;
+  margin: 15px 7.5px 0px 7.5px;
+  float: right;
 }

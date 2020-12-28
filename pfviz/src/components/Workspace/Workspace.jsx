@@ -21,7 +21,6 @@ class Workspace extends Component {
     super();
     this.updateNode = this.updateNode.bind(this);
     this.breadthFirstSearch = this.breadthFirstSearch.bind(this);
-    this.dijkstras_algorithm = this.dijkstras_algorithm.bind(this);
     this.isStartNode = this.isStartNode.bind(this);
     this.isEndNode = this.isEndNode.bind(this);
     this.isWall = this.isWall.bind(this);
@@ -106,15 +105,12 @@ class Workspace extends Component {
 
   startAlgorithm() {
     switch (this.props.algorithm) {
-      case "dijkstra":
-        this.dijkstras_algorithm();
-        break;
       case "breadth-first":
         //console.log("Breadth First Search >> " + this.state.start.col);
-        console.log(
-          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BFS: " +
-            this.breadthFirstSearch(this.state.start.row, this.state.start.col)
-        );
+        //console.log(
+        //  ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BFS: " +
+        //    this.breadthFirstSearch(this.state.start.row, this.state.start.col)
+        //);
         break;
       default:
         console.log("Algorithm not setup");
@@ -154,13 +150,11 @@ class Workspace extends Component {
     this.setState({ nodes: newNodes });
   }
 
-  dijkstras_algorithm() {}
-
   breadthFirstSearch(row, col, cost = 0, checked = {}) {
     //console.log("Checking: (" + row + ", " + col + ")");
 
     setTimeout(() => {
-      console.log("Update: (" + row + ", " + col + ") >> " + this.endFound);
+      //console.log("Update: (" + row + ", " + col + ") >> " + this.endFound);
 
       if (!this.isStartNode(row, col)) {
         let newStatus = "visited";
@@ -173,14 +167,14 @@ class Workspace extends Component {
 
       if (row === this.state.end.row && col === this.state.end.col) {
         this.endFound = true;
-        console.log(
-          " >>>>>>>>>>>>>>>>>>>>> End Found: (" +
-            row +
-            ", " +
-            col +
-            ") >> " +
-            cost
-        );
+        //console.log(
+        //  " >>>>>>>>>>>>>>>>>>>>> End Found: (" +
+        //    row +
+        //    ", " +
+        //    col +
+        //    ") >> " +
+        //    cost
+        //);
         return cost;
       }
 

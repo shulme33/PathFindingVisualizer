@@ -6,22 +6,34 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Header extends Component {
-  algorithmChosen(buttonName) {
-    console.log("Button: " + buttonName);
+  state = {
+    algorithm: "Breadth First Search",
+    algorithmCode: "breadth-first",
+  };
+
+  constructor() {
+    super();
+    this.algorithmChosen = this.algorithmChosen.bind(this);
+  }
+
+  algorithmChosen(newAlgCode, newAlgorithm) {
+    this.props.updateAlgorithm(newAlgCode);
+    this.setState({ algorithm: newAlgorithm, algorithmCode: newAlgCode });
   }
 
   render() {
     return (
       <div className="hdr">
         <h1 className="hdr-title">Pathfinding Visualizer</h1>
+
         <button
           type="button"
           className="btn btn-outline-light hdr-button"
           onClick={() => {
-            this.props.updateMode("start");
+            this.props.updateMode("wall");
           }}
         >
-          Place Start Node
+          Place Wall
         </button>
 
         <button
@@ -38,32 +50,11 @@ class Header extends Component {
           type="button"
           className="btn btn-outline-light hdr-button"
           onClick={() => {
-            this.props.updateMode("wall");
+            this.props.updateMode("start");
           }}
         >
-          Place Wall
+          Place Start Node
         </button>
-
-        <select
-          name="algorithms"
-          id="algorithms"
-          onChange={() => {
-            this.props.updateAlgorithm(
-              document.getElementById("algorithms").value
-            );
-          }}
-        >
-          <option value="dijkstra">Dijkstra’s Alogirthm</option>
-          <option value="min-weight">Minimum Weight Spanning Tree</option>
-          <option value="shortest-path">Shortest Path</option>
-          <option value="single-source">Single Source Shortest Path</option>
-          <option value="all-pairs">All Pairs Shortest Path</option>
-          <option value="a-star">A*</option>
-          <option value="yens">Yen’s K-shortest Paths</option>
-          <option value="random-walk">Random Walk</option>
-          <option value="breadth-first">Breadth First Search</option>
-          <option value="depth-first">Depth First Search</option>
-        </select>
 
         <div className="btn-group hdr-button">
           <button
@@ -73,17 +64,24 @@ class Header extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Algorithm
+            {this.state.algorithm}
           </button>
           <div className="dropdown-menu">
             <button
-              id="breadth-first"
               className="dropdown-item"
               onClick={() => {
-                this.algorithmChosen(this.id).bind(this);
+                this.algorithmChosen("breadth-first", "Breadth First Search");
               }}
             >
-              Action
+              Breadth First Search
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                this.algorithmChosen("dijkstra", "Dijkstra’s Alogirthm");
+              }}
+            >
+              Dijkstra’s Alogirthm
             </button>
           </div>
         </div>
@@ -102,4 +100,15 @@ class Header extends Component {
 
 export default Header;
 
-//updateAlgFunction={this.updateAlgorithm} updateModeFunction={this.updateMode}
+/*
+<option value="dijkstra">Dijkstra’s Alogirthm</option>
+<option value="min-weight">Minimum Weight Spanning Tree</option>
+<option value="shortest-path">Shortest Path</option>
+<option value="single-source">Single Source Shortest Path</option>
+<option value="all-pairs">All Pairs Shortest Path</option>
+<option value="a-star">A*</option>
+<option value="yens">Yen’s K-shortest Paths</option>
+<option value="random-walk">Random Walk</option>
+<option value="breadth-first">Breadth First Search</option>
+<option value="depth-first">Depth First Search</option>
+*/
