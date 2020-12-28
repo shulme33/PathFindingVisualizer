@@ -1,6 +1,6 @@
 .node {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   box-sizing: border-box;
   border: 1px solid #bfbfbf;
   background-color: white;
@@ -11,6 +11,6 @@
 
 .node-filler {
   background-color: green;
-  width: 16px;
-  height: 16px;
+  width: 28px;
+  height: 28px;
 }

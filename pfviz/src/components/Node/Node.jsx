@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import "./node.css";
 
-class Node extends Component {
+class Node extends PureComponent {
   //nodeClicked
   //row
   //column
   //color
-  //mode
+  //status
   state = { status: this.props.status };
 
   componentDidUpdate(prevProps) {
@@ -15,15 +15,21 @@ class Node extends Component {
     }
   }
 
+  //shouldComponentUpdate(nextProps) {
+  //  return this.props.status !== nextProps.status;
+  // }
+
   addFiller() {
     let fillColor = "#ffffff";
 
     if (this.props.status === "end") {
-      fillColor = "#ff0000";
+      fillColor = "#eb3465";
+    } else if (this.props.status === "end-found") {
+      fillColor = "#ebc334";
     } else if (this.props.status === "start") {
-      fillColor = "#00ff00";
+      fillColor = "#34eb67";
     } else if (this.props.status === "visited") {
-      fillColor = "#000000";
+      fillColor = "#b5ffca";
     }
 
     let filler = (
@@ -33,6 +39,7 @@ class Node extends Component {
   }
 
   render() {
+    //console.log("Rerender Child");
     return (
       <div
         className="node"

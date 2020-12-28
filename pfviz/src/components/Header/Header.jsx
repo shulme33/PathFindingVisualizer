@@ -2,24 +2,6 @@ import React, { Component } from "react";
 import "./header.css";
 
 class Header extends Component {
-  state = {
-    headerWord: "Sam",
-  };
-
-  componentDidMount() {
-    this.setState({ headerWord: "Sam" });
-  }
-
-  changeHeaderWord() {
-    if (this.state.headerWord === "Sam") {
-      this.setState({ headerWord: "Hulme" });
-    } else {
-      this.setState({ headerWord: "Sam" });
-    }
-
-    setTimeout(this.changeHeaderWord.bind(this), 200);
-  }
-
   render() {
     return (
       <div className="hdr">
@@ -59,7 +41,6 @@ class Header extends Component {
           <option value="breadth-first">Breadth First Search</option>
           <option value="depth-first">Depth First Search</option>
         </select>
-        <h1>{this.state.headerWord}</h1>
       </div>
     );
   }

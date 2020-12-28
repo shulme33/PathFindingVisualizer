@@ -15,18 +15,23 @@ class Workspace extends Component {
     },
   };
 
+  endFound = false;
+
   constructor() {
     super();
+    this.updateNode = this.updateNode.bind(this);
     this.breadthFirstSearch = this.breadthFirstSearch.bind(this);
     this.dijkstras_algorithm = this.dijkstras_algorithm.bind(this);
+    this.isStartNode = this.isStartNode.bind(this);
+    this.isEndNode = this.isEndNode.bind(this);
   }
 
   componentDidMount() {
     const mainHeight = document.getElementById("main-wrk").clientHeight;
     const mainWidth = document.getElementById("main-wrk").clientWidth;
 
-    const totalHigh = Math.floor(mainHeight / 20);
-    const totalWide = Math.floor(mainWidth / 20);
+    const totalHigh = Math.floor(mainHeight / 30);
+    const totalWide = Math.floor(mainWidth / 30);
 
     let newNodes = [];
     for (var i = 0; i < totalHigh; i++) {
@@ -50,7 +55,7 @@ class Workspace extends Component {
   nodeClicked = (e, row, col) => {
     let newNodes = this.state.nodes;
     newNodes[row][col].status = this.props.mode; //HERE
-    console.log("Mode: " + this.props.mode);
+    //console.log("Mode: " + this.props.mode);
 
     var newStart = this.state.start;
     var newEnd = this.state.end;
@@ -75,6 +80,7 @@ class Workspace extends Component {
   };
 
   render() {
+    //console.log("----------------------------Render Parent");
     return (
       <div className="wrk" id="main-wrk">
         <div className="wrk-grid">
@@ -98,14 +104,6 @@ class Workspace extends Component {
   }
 
   startAlgorithm() {
-    let newNodes = [...this.state.nodes];
-    let changeNode = {
-      ...newNodes[this.state.start.row + 1][this.state.start.col + 1],
-    };
-    changeNode.status = "visited";
-    newNodes[this.state.start.row + 1][this.state.start.col + 1] = changeNode;
-    this.setState({ nodes: newNodes });
-
     switch (this.props.algorithm) {
       case "dijkstra":
         this.dijkstras_algorithm();
@@ -113,7 +111,7 @@ class Workspace extends Component {
       case "breadth-first":
         //console.log("Breadth First Search >> " + this.state.start.col);
         console.log(
-          "----------BFS: " +
+          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BFS: " +
             this.breadthFirstSearch(this.state.start.row, this.state.start.col)
         );
         break;
@@ -131,33 +129,75 @@ class Workspace extends Component {
     return true;
   }
 
+  isStartNode(row, col) {
+    return row === this.state.start.row && col === this.state.start.col;
+  }
+
+  isEndNode(row, col) {
+    return row === this.state.end.row && col === this.state.end.col;
+  }
+
+  updateNode(row, col, newStatus) {
+    if (this.endFound) return;
+    //console.log("Update: (" + row + ", " + col + ")");
+    let newNodes = [...this.state.nodes];
+    let changeNode = {
+      ...newNodes[row][col],
+    };
+    changeNode.status = newStatus;
+    newNodes[row][col] = changeNode;
+    this.setState({ nodes: newNodes });
+  }
+
   dijkstras_algorithm() {}
 
   breadthFirstSearch(row, col, cost = 0, checked = {}) {
     //console.log("Checking: (" + row + ", " + col + ")");
 
-    if (row === this.state.end.row && col === this.state.end.col) {
-      return cost;
-    }
+    setTimeout(() => {
+      console.log("Update: (" + row + ", " + col + ") >> " + this.endFound);
 
-    let dir = [
-      [1, 0],
-      [0, 1],
-      [-1, 0],
-      [0, -1],
-    ];
+      if (!this.isStartNode(row, col)) {
+        let newStatus = "visited";
+        if (this.isEndNode(row, col)) {
+          newStatus = "end-found";
+        }
 
-    let smallestCost = Infinity;
-    for (let i = 0; i < dir.length; i++) {
-      let newRow = row + dir[i][0];
-      let newCol = col + dir[i][1];
-      let key = newRow + "-" + newCol;
+        this.updateNode(row, col, newStatus);
+      }
 
-      if (
-        this.isOnGrid(newRow, newCol) &&
-        (!(key in checked) || checked[key] > cost + 1)
-      ) {
-        /*console.log(
+      if (row === this.state.end.row && col === this.state.end.col) {
+        this.endFound = true;
+        console.log(
+          " >>>>>>>>>>>>>>>>>>>>> End Found: (" +
+            row +
+            ", " +
+            col +
+            ") >> " +
+            cost
+        );
+        return cost;
+      }
+
+      let dir = [
+        [0, 1],
+        [-1, 0],
+        [0, -1],
+        [1, 0],
+      ];
+
+      let smallestCost = Infinity;
+      for (let i = 0; i < dir.length; i++) {
+        let newRow = row + dir[i][0];
+        let newCol = col + dir[i][1];
+        let key = newRow + "-" + newCol;
+
+        if (
+          !this.endFound &&
+          this.isOnGrid(newRow, newCol) &&
+          (!(key in checked) || checked[key] > cost + 1)
+        ) {
+          /*console.log(
           "New: (" +
             newRow +
             ", " +
@@ -167,17 +207,20 @@ class Workspace extends Component {
             " <<>> " +
             (cost + 1)
         );*/
-        checked[key] = cost + 1;
-        let curSmallest = this.breadthFirstSearch(
-          newRow,
-          newCol,
-          cost + 1,
-          checked
-        );
-        if (curSmallest < smallestCost) smallestCost = curSmallest;
+          checked[key] = cost + 1;
+          let curSmallest = this.breadthFirstSearch(
+            newRow,
+            newCol,
+            cost + 1,
+            checked
+          );
+          if (curSmallest < smallestCost) {
+            smallestCost = curSmallest;
+          }
+        }
       }
-    }
-    return smallestCost;
+      return smallestCost;
+    }, 0);
   }
 }
 /*
