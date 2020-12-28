@@ -24,6 +24,7 @@ class Workspace extends Component {
     this.dijkstras_algorithm = this.dijkstras_algorithm.bind(this);
     this.isStartNode = this.isStartNode.bind(this);
     this.isEndNode = this.isEndNode.bind(this);
+    this.isWall = this.isWall.bind(this);
   }
 
   componentDidMount() {
@@ -137,6 +138,10 @@ class Workspace extends Component {
     return row === this.state.end.row && col === this.state.end.col;
   }
 
+  isWall(row, col) {
+    return this.state.nodes[row][col].status === "wall";
+  }
+
   updateNode(row, col, newStatus) {
     if (this.endFound) return;
     //console.log("Update: (" + row + ", " + col + ")");
@@ -195,6 +200,7 @@ class Workspace extends Component {
         if (
           !this.endFound &&
           this.isOnGrid(newRow, newCol) &&
+          !this.isWall(newRow, newCol) &&
           (!(key in checked) || checked[key] > cost + 1)
         ) {
           /*console.log(

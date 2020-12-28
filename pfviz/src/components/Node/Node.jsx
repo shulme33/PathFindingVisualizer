@@ -30,6 +30,8 @@ class Node extends PureComponent {
       fillColor = "#34eb67";
     } else if (this.props.status === "visited") {
       fillColor = "#b5ffca";
+    } else if (this.props.status === "wall") {
+      fillColor = "#000000";
     }
 
     let filler = (

@@ -34,6 +34,16 @@ class Header extends Component {
           Place End Node
         </button>
 
+        <button
+          type="button"
+          className="btn btn-outline-light hdr-button"
+          onClick={() => {
+            this.props.updateMode("wall");
+          }}
+        >
+          Place Wall
+        </button>
+
         <select
           name="algorithms"
           id="algorithms"
