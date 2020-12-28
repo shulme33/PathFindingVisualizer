@@ -3,3 +3,15 @@
   height: 200px;
   background-color: #1f1f1f;
 }
+
+.hdr-title {
+  color: #ffffff;
+  display: inline-flex;
+  margin: 10px 50px 0px 10px;
+  vertical-align: top;
+}
+
+.hdr-button {
+  vertical-align: top;
+  margin-top: 15px;
+}

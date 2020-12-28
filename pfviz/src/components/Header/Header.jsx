@@ -1,24 +1,37 @@
 import React, { Component } from "react";
 import "./header.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "jquery/dist/jquery.min.js";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class Header extends Component {
+  algorithmChosen(buttonName) {
+    console.log("Button: " + buttonName);
+  }
+
   render() {
     return (
       <div className="hdr">
-        <button onClick={this.props.beginAlgorithm}>Begin</button>
+        <h1 className="hdr-title">Pathfinding Visualizer</h1>
         <button
+          type="button"
+          className="btn btn-outline-light hdr-button"
           onClick={() => {
             this.props.updateMode("start");
           }}
         >
-          Start Node
+          Place Start Node
         </button>
+
         <button
+          type="button"
+          className="btn btn-outline-light hdr-button"
           onClick={() => {
             this.props.updateMode("end");
           }}
         >
-          End Node
+          Place End Node
         </button>
 
         <select
@@ -41,6 +54,37 @@ class Header extends Component {
           <option value="breadth-first">Breadth First Search</option>
           <option value="depth-first">Depth First Search</option>
         </select>
+
+        <div className="btn-group hdr-button">
+          <button
+            type="button"
+            className="btn btn-outline-light dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Algorithm
+          </button>
+          <div className="dropdown-menu">
+            <button
+              id="breadth-first"
+              className="dropdown-item"
+              onClick={() => {
+                this.algorithmChosen(this.id).bind(this);
+              }}
+            >
+              Action
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-success hdr-button"
+          onClick={this.props.beginAlgorithm}
+        >
+          Start Algorithm
+        </button>
       </div>
     );
   }
