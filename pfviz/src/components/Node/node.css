@@ -13,4 +13,9 @@
   background-color: green;
   width: 28px;
   height: 28px;
+  padding: 0px 2px 2px 2px;
+}
+
+.icon-light {
+  color: #ffffff;
 }

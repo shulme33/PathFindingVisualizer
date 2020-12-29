@@ -6,7 +6,7 @@ class Pathfinder extends Component {
   //mode --> addStart, addEnd
 
   state = {
-    algorithm: "",
+    algorithm: "breadth-first",
     mode: "",
   };
 

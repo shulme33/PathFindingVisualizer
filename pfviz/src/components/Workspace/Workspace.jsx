@@ -107,10 +107,10 @@ class Workspace extends Component {
     switch (this.props.algorithm) {
       case "breadth-first":
         //console.log("Breadth First Search >> " + this.state.start.col);
-        //console.log(
-        //  ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BFS: " +
-        //    this.breadthFirstSearch(this.state.start.row, this.state.start.col)
-        //);
+        console.log(
+          ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BFS: " +
+            this.breadthFirstSearch(this.state.start.row, this.state.start.col)
+        );
         break;
       default:
         console.log("Algorithm not setup");
@@ -139,6 +139,8 @@ class Workspace extends Component {
   }
 
   updateNode(row, col, newStatus) {
+    var t0 = performance.now();
+
     if (this.endFound) return;
     //console.log("Update: (" + row + ", " + col + ")");
     let newNodes = [...this.state.nodes];
@@ -147,6 +149,13 @@ class Workspace extends Component {
     };
     changeNode.status = newStatus;
     newNodes[row][col] = changeNode;
+
+    var t1 = 1000 * (performance.now() - t0);
+
+    if (t1 > 6) {
+      console.log("Long time..."); //"Call to doSomething took " + t1 + " microseconds.");
+    }
+
     this.setState({ nodes: newNodes });
   }
 
@@ -156,14 +165,14 @@ class Workspace extends Component {
     setTimeout(() => {
       //console.log("Update: (" + row + ", " + col + ") >> " + this.endFound);
 
-      if (!this.isStartNode(row, col)) {
-        let newStatus = "visited";
-        if (this.isEndNode(row, col)) {
-          newStatus = "end-found";
-        }
-
-        this.updateNode(row, col, newStatus);
+      let newStatus = "visited";
+      if (this.isEndNode(row, col)) {
+        newStatus = "end-found";
+      } else if (this.isStartNode(row, col)) {
+        newStatus = "start-searching";
       }
+
+      this.updateNode(row, col, newStatus);
 
       if (row === this.state.end.row && col === this.state.end.col) {
         this.endFound = true;

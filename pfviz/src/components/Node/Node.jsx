@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import "./node.css";
+import { ReactComponent as StartIcon } from "../../icons/chevron-circle-right-solid.svg";
+import { ReactComponent as EndIcon } from "../../icons/bullseye-solid.svg";
 
 class Node extends PureComponent {
   //nodeClicked
@@ -21,21 +23,39 @@ class Node extends PureComponent {
 
   addFiller() {
     let fillColor = "#ffffff";
+    let fillIcon = undefined;
 
-    if (this.props.status === "end") {
-      fillColor = "#eb3465";
-    } else if (this.props.status === "end-found") {
-      fillColor = "#ebc334";
-    } else if (this.props.status === "start") {
-      fillColor = "#34eb67";
-    } else if (this.props.status === "visited") {
-      fillColor = "#b5ffca";
-    } else if (this.props.status === "wall") {
-      fillColor = "#000000";
+    switch (this.props.status) {
+      case "end":
+        //fillColor = "#eb3465";
+        fillIcon = <EndIcon />;
+        break;
+      case "end-found":
+        fillColor = "#ebc334";
+        fillIcon = <EndIcon className="icon-light" />;
+        break;
+      case "start":
+        //fillColor = "#34eb67";
+        fillIcon = <StartIcon />;
+        break;
+      case "start-searching":
+        fillColor = "#1fad47";
+        fillIcon = <StartIcon className="icon-light" />;
+        break;
+      case "visited":
+        fillColor = "#b5ffca";
+        break;
+      case "wall":
+        fillColor = "#000000";
+        break;
+      default:
+        break;
     }
 
     let filler = (
-      <div className="node-filler" style={{ backgroundColor: fillColor }}></div>
+      <div className="node-filler" style={{ backgroundColor: fillColor }}>
+        {fillIcon}
+      </div>
     );
     return filler;
   }
